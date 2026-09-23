@@ -1,0 +1,29 @@
+DROP FUNCTION IF EXISTS situacao_aluno;
+
+DELIMITER //
+
+CREATE FUNCTION situacao_aluno(media DECIMAL(4,2))
+RETURNS VARCHAR(20)
+DETERMINISTIC
+BEGIN
+    IF media >= 6 THEN
+        RETURN 'Aprovado';
+    ELSEIF media >= 4 THEN
+        RETURN 'Recuperação';
+    ELSE
+        RETURN 'Reprovado';
+    END IF;
+END//
+
+DELIMITER ;
+
+SELECT
+    media,
+    situacao_aluno(media) AS situacao
+FROM (
+    SELECT 7.50 AS media
+    UNION ALL
+    SELECT 5.00
+    UNION ALL
+    SELECT 3.50
+) AS testes;
